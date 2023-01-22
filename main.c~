@@ -1,0 +1,51 @@
+#include "monty.h"
+/**
+ *main: driver code for montu program
+ *@argc: number of args to program
+ *@argv: array of args
+ *Return: 0
+ */
+int main(int argc, char *argv[])
+{
+	unsigned int ln = 0;
+	size_t size = 0;
+	ssize_t lnl;
+	char *buff = NULL, *opcode;
+	stack_t *stack = NULL;
+	int errno = 0;
+	FILE *fp;
+
+	if (argc != 2)
+	{
+		fprintf(stderr, "USAGE: monty file\n");
+		exit(EXIT_FAILURE);
+	}
+	fp = fopen(argv[1], "r");
+	if (!fp)
+	{
+		fprintf(stderr, "Error: Can't open file %s\n", argv[1]);
+		exit(EXIT_FAILURE);
+	}
+	while ((lnl = getline(&buff, &size, fp)) != -1)
+	{
+		ln++;
+		opcode = token(buff, &errno);
+		if (errno == 0)
+			codexec(opcode, &stack, ln);
+	}
+	if (errno == 1)
+	{
+		if (opcode)
+			fprintf(stderr, "L%d: unknown instruction %s\n", ln, opcode);
+		exit(EXIT_FAILURE);
+	}
+	if (errno == 2)
+	{
+		fprintf(stderr, "L%d: usage: push integer\n", ln);
+		exit(EXIT_STATUS);
+	}
+	free(buff);
+	free(opcode);
+	fclose(fp);
+	return (0);
+}
