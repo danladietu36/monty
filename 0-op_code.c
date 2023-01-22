@@ -59,7 +59,7 @@ void push(stack_t **stack, unsigned int line_number)
 {
 	stack_t *new_node;
 
-	new_node = malloc(sizeof(stack_t));
+	new_node = (stack_t *)malloc(sizeof(stack_t));
 
 	if (new_node == NULL)
 	{
