@@ -1,0 +1,16 @@
+#include "monty.h"
+/**
+ *pop - removes element on top of stack
+ *@head: pointer to pointer
+ *@ln: line no
+ */
+void pop(stack_t **head, unsigned int ln)
+{
+	(void)ln;
+	stack_t *temp;
+
+	temp = *head;
+	*head = (*head)->next;
+	(*head)->prev = NULL;
+	free(temp);
+}
